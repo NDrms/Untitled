@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://7gukiaixkhtc"]
+[gd_scene load_steps=7 format=3 uid="uid://7gukiaixkhtc"]
 
 [ext_resource type="Script" path="res://CharacterBody3d.cs" id="1_k6ku5"]
 
@@ -9,6 +9,8 @@
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_o5dpx"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_g1c8o"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rl8aa"]
 
 [node name="Node3D" type="Node3D"]
 
@@ -43,3 +45,4 @@ shape = SubResource("WorldBoundaryShape3D_o5dpx")
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
 mesh = SubResource("PlaneMesh_g1c8o")
 skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_rl8aa")

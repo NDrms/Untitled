@@ -21,6 +21,9 @@ public partial class CharacterBody3d : CharacterBody3D
 	// Указатель на камеру
 	private Camera3D _camera;
 
+	// Переменная для отслеживания состояния приседания
+	private bool _isCrouching = false;
+
 	public override void _Ready()
 	{
 		// Инициализируем камеру (замените "Camera3D" на имя узла вашей камеры)
@@ -71,6 +74,24 @@ public partial class CharacterBody3d : CharacterBody3D
 
 		// Двигаем персонажа и обрабатываем столкновения
 		MoveAndSlide();
+
+		// Обработка приседания
+		if (Input.IsActionJustPressed("crouch"))
+		{
+			_isCrouching = !_isCrouching;
+			// Измените высоту персонажа или другие параметры для приседания, если необходимо
+			if (_isCrouching)
+			{
+				// Пример уменьшения высоты персонажа
+				// Можно адаптировать под вашу модель или логику
+				Scale = new Vector3(1, 0.5f, 1);
+			}
+			else
+			{
+				// Возвращаемся в обычное положение
+				Scale = new Vector3(1, 1, 1);
+			}
+		}
 	}
 
 	public override void _Input(InputEvent @event)
