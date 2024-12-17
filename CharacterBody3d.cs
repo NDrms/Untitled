@@ -19,7 +19,10 @@ public partial class CharacterBody3d : CharacterBody3D
 	public const float MouseSensitivity = 0.1f;
 
 	// Высота при приседании
-	private const float CrouchScaleY = 0.5f; // Процент от оригинального размера по Y
+	private const float CrouchHeight = 0.5f;
+
+	// Скорость плавного перемещения камеры
+	private const float CameraMoveSpeed = 5.0f;
 
 	// Указатель на камеру
 	private Camera3D _camera;
@@ -115,11 +118,11 @@ public partial class CharacterBody3d : CharacterBody3D
 				// Уменьшаем высоту коллайдера
 				if (_collisionShape.Shape is CapsuleShape3D capsule)
 				{
-					capsule.Height = _defaultCollisionHeight * CrouchScaleY;
+					capsule.Height = _defaultCollisionHeight * CrouchHeight;
 				}
 
 				// Масштабируем модель для эффекта приседания
-				_meshInstance.Scale = new Vector3(_defaultScale.X, _defaultScale.Y * CrouchScaleY, _defaultScale.Z);
+				_meshInstance.Scale = new Vector3(_defaultScale.X, _defaultScale.Y * CrouchHeight, _defaultScale.Z);
 			}
 			else
 			{
@@ -133,6 +136,13 @@ public partial class CharacterBody3d : CharacterBody3D
 				_meshInstance.Scale = _defaultScale;
 			}
 		}
+
+		// Плавно изменяем локальную позицию камеры относительно персонажа
+		Vector3 targetCameraOffset = _isCrouching 
+			? new Vector3(0, _defaultCollisionHeight * CrouchHeight / 2, 0)
+			: new Vector3(0, _defaultCollisionHeight / 2, 0);
+
+		_camera.Position = _camera.Position.Lerp(targetCameraOffset, (float)(CameraMoveSpeed * delta));
 	}
 
 	public override void _Input(InputEvent @event)
