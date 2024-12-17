@@ -15,7 +15,7 @@
 [node name="Node3D" type="Node3D"]
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000456896, 12.5806, -0.0168284)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000456896, 0.984028, -0.0168284)
 visibility_parent = NodePath("MeshInstance3D")
 script = ExtResource("1_k6ku5")
 metadata/_edit_group_ = true
@@ -30,7 +30,7 @@ mesh = SubResource("CapsuleMesh_b7re0")
 metadata/_edit_group_ = true
 
 [node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.66453, 0)
+transform = Transform3D(1, 0, 0, 0, 0.82971, 0.558194, 0, -0.558194, 0.82971, 0, 1.74352, 2.0003)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.96659, 11.5101, -0.484865)
