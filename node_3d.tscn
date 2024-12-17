@@ -1,9 +1,14 @@
-[gd_scene load_steps=9 format=3 uid="uid://7gukiaixkhtc"]
+[gd_scene load_steps=16 format=3 uid="uid://7gukiaixkhtc"]
 
 [ext_resource type="Script" path="res://CharacterBody3d.cs" id="1_k6ku5"]
+[ext_resource type="Texture2D" uid="uid://cxntl0gw87duh" path="res://textures/bot.png" id="2_2tprd"]
 [ext_resource type="Texture2D" uid="uid://cnlgqg4s3bbsr" path="res://textures/DOSKIE.png" id="2_kanle"]
+[ext_resource type="Texture2D" uid="uid://c8fqi3nmm742u" path="res://textures/decal1.png" id="4_uvl3o"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f1jro"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hhqel"]
+albedo_texture = ExtResource("2_2tprd")
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_b7re0"]
 
@@ -15,6 +20,16 @@ albedo_texture = ExtResource("2_kanle")
 [sub_resource type="PlaneMesh" id="PlaneMesh_g1c8o"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rl8aa"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ls67k"]
+albedo_texture = ExtResource("2_kanle")
+
+[sub_resource type="BoxMesh" id="BoxMesh_q4ejg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a5utd"]
+albedo_texture = ExtResource("4_uvl3o")
+
+[sub_resource type="QuadMesh" id="QuadMesh_6blkb"]
 
 [node name="Node3D" type="Node3D"]
 
@@ -30,6 +45,8 @@ shape = SubResource("CapsuleShape3D_f1jro")
 metadata/_edit_group_ = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+transform = Transform3D(-0.999985, 0, 0.00548026, 0, 1, 0, -0.00548026, 0, -0.999985, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_hhqel")
 mesh = SubResource("CapsuleMesh_b7re0")
 metadata/_edit_group_ = true
 
@@ -37,7 +54,7 @@ metadata/_edit_group_ = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.754207, 0)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.967347, 1.10788e-08, -0.253454, 0.253454, -4.22841e-08, 0.967347, 0, -1, -4.37114e-08, -14.5938, 11.5101, -0.484865)
+transform = Transform3D(0.862853, -0.0416992, -0.503732, 0.484123, 0.354648, 0.799906, 0.145292, -0.93407, 0.326197, -14.5938, 11.5101, -0.484865)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
@@ -51,3 +68,15 @@ material_override = SubResource("StandardMaterial3D_krj8v")
 mesh = SubResource("PlaneMesh_g1c8o")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_rl8aa")
+
+[node name="Стены" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Стены"]
+transform = Transform3D(43.5026, 0, 0, 0, 31.1836, 0, 0, 0, 1, 0, 15.2541, -17.4349)
+material_override = SubResource("StandardMaterial3D_ls67k")
+mesh = SubResource("BoxMesh_q4ejg")
+
+[node name="decal1" type="MeshInstance3D" parent="Стены"]
+transform = Transform3D(1.90582, 0, 0, 0, 3.48452, 0, 0, 0, 1, 0.176009, 3.40631, -16.5561)
+material_override = SubResource("StandardMaterial3D_a5utd")
+mesh = SubResource("QuadMesh_6blkb")
