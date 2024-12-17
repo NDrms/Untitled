@@ -21,8 +21,8 @@ public partial class CharacterBody3d : CharacterBody3D
 	// Высота при приседании
 	private const float CrouchHeight = 0.5f;
 
-	// Скорость плавного перемещения камеры
-	private const float CameraMoveSpeed = 5.0f;
+	// Скорость плавного перемещения камеры и коллайдера
+	private const float SmoothMoveSpeed = 5.0f;
 
 	// Указатель на камеру
 	private Camera3D _camera;
@@ -42,6 +42,9 @@ public partial class CharacterBody3d : CharacterBody3D
 	// Оригинальный масштаб модели
 	private Vector3 _defaultScale;
 
+	// Текущая высота коллайдера
+	private float _currentCollisionHeight;
+
 	public override void _Ready()
 	{
 		// Инициализируем камеру
@@ -57,6 +60,7 @@ public partial class CharacterBody3d : CharacterBody3D
 		if (_collisionShape.Shape is CapsuleShape3D capsule)
 		{
 			_defaultCollisionHeight = capsule.Height;
+			_currentCollisionHeight = _defaultCollisionHeight;
 		}
 
 		// Сохраняем оригинальный масштаб модели
@@ -112,29 +116,6 @@ public partial class CharacterBody3d : CharacterBody3D
 		if (Input.IsActionJustPressed("crouch"))
 		{
 			_isCrouching = !_isCrouching;
-
-			if (_isCrouching)
-			{
-				// Уменьшаем высоту коллайдера
-				if (_collisionShape.Shape is CapsuleShape3D capsule)
-				{
-					capsule.Height = _defaultCollisionHeight * CrouchHeight;
-				}
-
-				// Масштабируем модель для эффекта приседания
-				_meshInstance.Scale = new Vector3(_defaultScale.X, _defaultScale.Y * CrouchHeight, _defaultScale.Z);
-			}
-			else
-			{
-				// Возвращаем высоту коллайдера
-				if (_collisionShape.Shape is CapsuleShape3D capsule)
-				{
-					capsule.Height = _defaultCollisionHeight;
-				}
-
-				// Восстанавливаем масштаб модели
-				_meshInstance.Scale = _defaultScale;
-			}
 		}
 
 		// Плавно изменяем локальную позицию камеры относительно персонажа
@@ -142,7 +123,22 @@ public partial class CharacterBody3d : CharacterBody3D
 			? new Vector3(0, _defaultCollisionHeight * CrouchHeight / 2, 0)
 			: new Vector3(0, _defaultCollisionHeight / 2, 0);
 
-		_camera.Position = _camera.Position.Lerp(targetCameraOffset, (float)(CameraMoveSpeed * delta));
+		_camera.Position = _camera.Position.Lerp(targetCameraOffset, (float)(SmoothMoveSpeed * delta));
+
+		// Плавно изменяем высоту коллайдера
+		float targetHeight = _isCrouching ? _defaultCollisionHeight * CrouchHeight : _defaultCollisionHeight;
+		_currentCollisionHeight = Mathf.Lerp(_currentCollisionHeight, targetHeight, (float)(SmoothMoveSpeed * delta));
+
+		// Применяем плавно изменяющуюся высоту коллайдера
+		if (_collisionShape.Shape is CapsuleShape3D capsule)
+		{
+			capsule.Height = _currentCollisionHeight;
+		}
+
+		// Плавно изменяем масштаб модели
+		_meshInstance.Scale = _meshInstance.Scale.Lerp(
+			_isCrouching ? new Vector3(_defaultScale.X, _defaultScale.Y * CrouchHeight, _defaultScale.Z) : _defaultScale,
+			(float)(SmoothMoveSpeed * delta));
 	}
 
 	public override void _Input(InputEvent @event)
