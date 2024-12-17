@@ -1,12 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://7gukiaixkhtc"]
+[gd_scene load_steps=9 format=3 uid="uid://7gukiaixkhtc"]
 
 [ext_resource type="Script" path="res://CharacterBody3d.cs" id="1_k6ku5"]
+[ext_resource type="Texture2D" uid="uid://cnlgqg4s3bbsr" path="res://textures/DOSKIE.png" id="2_kanle"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f1jro"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_b7re0"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_o5dpx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_krj8v"]
+albedo_texture = ExtResource("2_kanle")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_g1c8o"]
 
@@ -33,7 +37,7 @@ metadata/_edit_group_ = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.754207, 0)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.96659, 11.5101, -0.484865)
+transform = Transform3D(0.967347, 1.10788e-08, -0.253454, 0.253454, -4.22841e-08, 0.967347, 0, -1, -4.37114e-08, -14.5938, 11.5101, -0.484865)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
@@ -43,6 +47,7 @@ shape = SubResource("WorldBoundaryShape3D_o5dpx")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_krj8v")
 mesh = SubResource("PlaneMesh_g1c8o")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_rl8aa")
