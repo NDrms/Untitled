@@ -45,15 +45,19 @@ public partial class CharacterBody3d : CharacterBody3D
 	// Текущая высота коллайдера
 	private float _currentCollisionHeight;
 
+	// Указатель на узел оружия
+	private Node3D _weapon;
+
 	public override void _Ready()
 	{
-		// Инициализируем камеру
+		// Инициализация камеры
 		_camera = GetNode<Camera3D>("Camera3D");
 
-		// Инициализируем коллайдер
-		_collisionShape = GetNode<CollisionShape3D>("CollisionShape3D");
+		// Инициализация оружия
+		_weapon = GetNode<Node3D>("Node/Weapon"); // Убедитесь, что узел оружия называется "Weapon"
 
-		// Инициализируем MeshInstance3D
+		// Инициализация других узлов
+		_collisionShape = GetNode<CollisionShape3D>("CollisionShape3D");
 		_meshInstance = GetNode<MeshInstance3D>("MeshInstance3D");
 
 		// Сохраняем оригинальную высоту капсулы
@@ -139,6 +143,17 @@ public partial class CharacterBody3d : CharacterBody3D
 		_meshInstance.Scale = _meshInstance.Scale.Lerp(
 			_isCrouching ? new Vector3(_defaultScale.X, _defaultScale.Y * CrouchHeight, _defaultScale.Z) : _defaultScale,
 			(float)(SmoothMoveSpeed * delta));
+
+		// Обновление позиции и ориентации оружия
+		if (_weapon != null)
+		{
+			// Позиционируем оружие относительно камеры с небольшим отступом
+			Vector3 weaponOffset = new Vector3(0.5f, -0.3f, 0);  // Можно настроить отступ по своему усмотрению
+			_weapon.Position = _camera.Position + _camera.Transform.Basis.Z * -0.5f + _camera.Transform.Basis.Y * 0.3f + weaponOffset;
+
+			// Ориентируем оружие в том направлении, в котором смотрит камера
+			_weapon.LookAt(_camera.Position + _camera.Transform.Basis.Z * 10.0f);  // Оружие будет всегда смотреть в направлении камеры
+		}
 	}
 
 	public override void _Input(InputEvent @event)
